@@ -2,7 +2,8 @@ import { createStore, combineReducers } from 'redux';
 import { getRowAndCol } from './helpers';
 
 const initState = {
-  board: []
+  board: [],
+  status: 0
 };
 
 for (let i = 0; i < 10; i++) {
@@ -33,8 +34,20 @@ const board = (state = initState.board, action) => {
   }
 };
 
+const status = (state = initState.status, action) => {
+  switch (action.type) {
+    case 'START':
+      return 1;
+    case 'END':
+      return 0;
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
-  board
+  board,
+  status
 });
 
 export const store = createStore(rootReducer);

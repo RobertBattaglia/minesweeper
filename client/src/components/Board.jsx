@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Row from './Row';
+import { startGame } from '../actions';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -15,7 +16,6 @@ const Wrapper = styled.div`
   border-radius: 0.3rem;
   transition: all 200ms;
   box-shadow: -0.25rem -0.5rem 1rem rgba(0, 0, 0, 0.8);
-
   &:hover {
     transform: translate(-49.5%, -49%);
     box-shadow: -0.5rem -1rem 2rem rgba(0, 0, 0, 0.6);
@@ -24,16 +24,36 @@ const Wrapper = styled.div`
 
 class Board extends Component {
   render() {
-    return (
-      <Wrapper className="board">
-        {this.props.board.map(squares => {
-          return <Row key={squares[0].id} squares={squares} />;
-        })}
-      </Wrapper>
-    );
+    const { board, status, handleClick } = this.props;
+    if (status) {
+      return (
+        <React.Fragment>
+          <Wrapper className="board">
+            {board.map(squares => {
+              return <Row key={squares[0].id} squares={squares} />;
+            })}
+          </Wrapper>
+        </React.Fragment>
+      );
+    } else {
+      return (
+        <React.Fragment>
+          <h1 onClick={handleClick}>Start Game</h1>
+        </React.Fragment>
+      );
+    }
   }
 }
 
-const mapStateToProps = store => ({ board: store.board });
+const mapStateToProps = store => ({ board: store.board, status: store.status });
 
-export default connect(mapStateToProps)(Board);
+const mapDispatchToProps = dispatch => ({
+  handleClick: () => {
+    dispatch(startGame());
+  }
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Board);
