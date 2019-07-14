@@ -1,4 +1,5 @@
 import { createStore, combineReducers } from 'redux';
+import { getRowAndCol } from './helpers';
 
 const initState = {
   board: []
@@ -17,6 +18,16 @@ for (let i = 0; i < 10; i++) {
 
 const board = (state = initState.board, action) => {
   switch (action.type) {
+    case 'FLIP_SQUARE':
+      const { id } = action;
+      const [row, col] = getRowAndCol(id);
+      if (state[row][col].flipped) {
+        return state;
+      }
+      const newState = [...state];
+      newState[row][col] = { ...state[row][col], flipped: 1 };
+      return newState;
+
     default:
       return state;
   }

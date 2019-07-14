@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+import { flipSquare } from '../actions';
+import { getRowAndCol } from '../helpers';
+
 const Wrapper = styled.div`
   display: inline-block;
   text-align: center;
@@ -21,12 +24,35 @@ const Wrapper = styled.div`
 `;
 
 class Square extends Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.props.handleSquareClick(this.props.id);
+  }
+
   render() {
-    const { row, square } = this.props;
-    return <Wrapper className="board__square" />;
+    const { id, flipped } = this.props;
+    return (
+      <Wrapper className="board__square" onClick={this.handleClick}>
+        {flipped}
+      </Wrapper>
+    );
   }
 }
 
-const mapStateToProps = store => ({ board: store.board });
+const mapStateToProps = (store, ownProps) => {
+  const [row, col] = getRowAndCol(ownProps.id);
+  return { flipped: store.board[row][col].flipped };
+};
 
-export default connect(mapStateToProps)(Square);
+const mapDispatchToProps = dispatch => ({
+  handleSquareClick: id => dispatch(flipSquare(id))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Square);

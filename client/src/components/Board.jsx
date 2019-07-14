@@ -24,7 +24,6 @@ const Wrapper = styled.div`
 
 class Board extends Component {
   render() {
-    console.log(this.props);
     return (
       <Wrapper className="board">
         {this.props.board.map(squares => {
