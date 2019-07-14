@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
+import Row from './Row';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -8,6 +10,7 @@ const Wrapper = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  background: #ff4136;
   border: 0.2rem solid;
   border-radius: 0.3rem;
   transition: all 200ms;
@@ -19,8 +22,19 @@ const Wrapper = styled.div`
   }
 `;
 
-export default class Board extends Component {
+class Board extends Component {
   render() {
-    return <Wrapper className="board" />;
+    console.log(this.props);
+    return (
+      <Wrapper className="board">
+        {this.props.board.map(squares => {
+          return <Row key={squares[0].id} squares={squares} />;
+        })}
+      </Wrapper>
+    );
   }
 }
+
+const mapStateToProps = store => ({ board: store.board });
+
+export default connect(mapStateToProps)(Board);
