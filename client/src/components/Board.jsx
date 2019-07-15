@@ -22,6 +22,27 @@ const Wrapper = styled.div`
   }
 `;
 
+const Button = styled.button`
+  display: block;
+  text-align: center;
+  margin: 5rem auto;
+  padding: 0.5rem;
+  color: #fff;
+  background: linear-gradient(to bottom right, #2de1fc, #214f4b);
+  border-radius: 1rem;
+  transition: 200ms;
+
+  &:hover {
+    background: linear-gradient(to top left, #2de1fc, #214f4b);
+    transform: translateY(-0.2rem);
+    box-shadow: 0.1rem 0.2rem 1rem rgba(0, 0, 0, 0.6);
+  }
+  &:active {
+    background: linear-gradient(to top left, #2de1fc, #214f4b);
+    transform: translateY(-0.1rem);
+  }
+`;
+
 class Board extends Component {
   render() {
     const { board, status, handleClick } = this.props;
@@ -38,7 +59,7 @@ class Board extends Component {
     } else {
       return (
         <React.Fragment>
-          <h1 onClick={handleClick}>Start Game</h1>
+          <Button onClick={handleClick}>Start Game</Button>
         </React.Fragment>
       );
     }
